@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- Apply 360 with Chrome-WebKit-Core -->
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <!-- Disable Baidu-Transcoding -->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="SogouFeedTeam" />
+
+    <title>夜间模式 Test</title>
+
+    <style>
+      .hello {
+        line-height: 48px;
+        color: #ff7800;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        border: 1px solid rgba(255, 120, 0, 0.5);
+        border-radius: 3px;
+      }
+    </style>
+
+    <style>
+      .night .hello {
+        border-color: rgba(153, 72, 0, 0.5);
+        color: #994800;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root">
+      <div class="hello">Hello, world</div>
+    </div>
+
+    <script>
+      function EventEmitter() {
+        this._events = this._events || {}
+      }
+
+      EventEmitter.prototype.on = function(event, listener) {
+        this._events || (this._events = {})
+
+        this._events[event] || (this._events[event] = [])
+
+        this._events[event].push(listener)
+      }
+
+      EventEmitter.prototype.emit = function(event) {
+        if (!this._events[event]) return
+
+        this._events[event].forEach(listener => {
+          listener.call()
+        })
+      }
+
+      var event = new EventEmitter()
+
+      event.on('night', function() {
+        console.log('switch night')
+
+        var $root = document.getElementById('root')
+        $root.className += ' night '
+      })
+
+      event.on('light', function() {
+        console.log('switch light')
+
+        var $root = document.getElementById('root')
+        $root.className = $root.className.replace(/night/, '')
+      })
+
+      setTimeout(function() {
+        event.emit('night')
+      }, 1e3)
+    </script>
+  </body>
+</html>
